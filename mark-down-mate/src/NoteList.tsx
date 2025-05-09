@@ -1,21 +1,46 @@
-import { Col, Row, Stack, Button, Form, Card } from "react-bootstrap";
+import {
+  Col,
+  Row,
+  Stack,
+  Button,
+  Form,
+  Card,
+  Badge,
+  Modal,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ReactSelect from "react-select";
 import { useState } from "react";
 import { Tag, Note } from "./App";
 import { useMemo } from "react";
+import styles from "./NoteList.module.css";
 type NoteListProps = {
   availableTags: Tag[];
   notes: Note[];
+  onDeleteTag: (id: string) => void;
+  onUpdateTag: (label: string, id: string) => void;
 };
 type SimplifiedNote = {
   title: string;
   tags: Tag[];
   id: string;
 };
-export function NoteList({ availableTags, notes }: NoteListProps) {
+type EditTagsProps = {
+  availableTags: Tag[];
+  show: boolean;
+  handleClose: () => void;
+  onDeleteTag: (id: string) => void;
+  onUpdateTag: (label: string, id: string) => void;
+};
+export function NoteList({
+  availableTags,
+  notes,
+  onDeleteTag,
+  onUpdateTag,
+}: NoteListProps) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState("");
+  const [iseditTagOpen, setEditTagOpen] = useState(false);
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
       return (
@@ -39,7 +64,12 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
             <Link to="/new">
               <Button variant="primary">Create</Button>
             </Link>
-            <Button variant="outline-secondary">Edit Tags</Button>
+            <Button
+              onClick={() => setEditTagOpen(true)}
+              variant="outline-secondary"
+            >
+              Edit Tags
+            </Button>
           </Stack>
         </Col>
       </Row>
@@ -95,14 +125,86 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
           </Col>
         ))}
       </Row>
+      <EditTagModel
+        onDeleteTag={onDeleteTag}
+        availableTags={availableTags}
+        show={iseditTagOpen}
+        onUpdateTag={onUpdateTag}
+        handleClose={() => setEditTagOpen(false)}
+      />
     </>
   );
 }
 
 function NoteCard({ id, title, tags }: SimplifiedNote) {
   return (
-    <Card>
-      <Card.Body></Card.Body>
+    <Card
+      as={Link}
+      to={`/${id}`}
+      className={`h-100 text-rest text-decoration-none ${styles.card}`}
+    >
+      <Card.Body>
+        <Stack
+          gap={2}
+          className="align-items-center justify-content-center h-100"
+        >
+          <span className="fs-5">{title}</span>
+          {tags.length > 0 && (
+            <Stack
+              gap={1}
+              direction="horizontal"
+              className="justtify-content-center flex-wrap"
+            >
+              {tags.map((tag) => (
+                <Badge className="text-truncate" key={tag.id}>
+                  {tag.label}
+                </Badge>
+              ))}
+            </Stack>
+          )}
+        </Stack>
+      </Card.Body>
     </Card>
+  );
+}
+
+function EditTagModel({
+  availableTags,
+  show,
+  handleClose,
+  onDeleteTag,
+  onUpdateTag,
+}: EditTagsProps) {
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Edit Tags</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Stack gap={2}>
+            {availableTags.map((tag) => (
+              <Row>
+                <Col>
+                  <Form.Control
+                    type="text"
+                    value={tag.label}
+                    onChange={(e) => onUpdateTag(e.target.value, tag.id)}
+                  ></Form.Control>
+                </Col>
+                <Col xs="auto">
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => onDeleteTag(tag.id)}
+                  >
+                    &times;
+                  </Button>
+                </Col>
+              </Row>
+            ))}
+          </Stack>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 }
