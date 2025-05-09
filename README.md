@@ -45,7 +45,6 @@ A clean, minimal note-taking app built with **React** and **TypeScript**, featur
 - ⚛️ [React](https://reactjs.org/)
 - 🟦 [TypeScript](https://www.typescriptlang.org/)
 - 🎨 [Bootstrap 5](https://getbootstrap.com/)
-- 📦 [marked](https://github.com/markedjs/marked) *(or react-markdown if you're using that)*
 
 ---
 
