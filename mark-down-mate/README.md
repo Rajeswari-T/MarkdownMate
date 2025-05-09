@@ -33,7 +33,7 @@ A clean, minimal note-taking app built with **React** and **TypeScript**, featur
 
 ## 📸 Demo
 
-![image](https://github.com/user-attachments/assets/e9180407-3761-4802-a59d-1bf208297564)
+![image](https://github.com/user-attachments/assets/aed9d197-6452-4400-9c94-bb62bda2ee85)
 ![image](https://github.com/user-attachments/assets/90efb24d-ccb0-425b-b9ce-21c2bdb4e478)
 ![image](https://github.com/user-attachments/assets/7e914b3b-285d-4afd-bdb6-b591f346be42)
 ![image](https://github.com/user-attachments/assets/096fda53-2b3d-40ed-b519-5701588f1153)
