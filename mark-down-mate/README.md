@@ -4,7 +4,7 @@ A clean, minimal note-taking app built with **React** and **TypeScript**, featur
 
 ---
 
-## 🚀 Features
+## Features
 
 - 📝 **Create Notes**
   - Each note has a **title**, **body** (written in Markdown), and **tags**.
